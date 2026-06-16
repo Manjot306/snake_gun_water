@@ -541,6 +541,84 @@
       color: var(--color-lose);
       background: rgba(248, 113, 113, 0.05);
     }
+    /* RULES MODAL */
+
+.rules-modal{
+    position:fixed;
+    inset:0;
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(8px);
+
+    z-index:9999;
+}
+
+.rules-modal.active{
+    display:flex;
+}
+
+.rules-content{
+    width:min(90%,420px);
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    animation:popup .3s ease;
+}
+
+.rules-content h2{
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.rule-line{
+    padding:12px;
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+}
+
+.close-rules{
+    position:absolute;
+    top:12px;
+    right:12px;
+
+    border:none;
+    background:none;
+
+    cursor:pointer;
+
+    font-size:1.2rem;
+    color:inherit;
+}
+
+@keyframes popup{
+
+    from{
+        opacity:0;
+        transform:scale(.85);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
   </style>
 </head>
 <body>
@@ -548,11 +626,21 @@
   <canvas id="confetti-canvas"></canvas>
 
   <main class="game-container">
-    
     <div class="sys-controls">
-      <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode" title="Toggle Theme">🌓</button>
-      <button class="icon-btn" id="sound-toggle" aria-label="Toggle Audio Feedback" title="Toggle Sound">🔊</button>
-    </div>
+  <button class="icon-btn" id="rules-btn" title="Game Rules">📜</button>
+
+  <button class="icon-btn" id="theme-toggle"
+    aria-label="Toggle Dark/Light Mode"
+    title="Toggle Theme">
+    🌓
+  </button>
+
+  <button class="icon-btn" id="sound-toggle"
+    aria-label="Toggle Audio Feedback"
+    title="Toggle Sound">
+    🔊
+  </button>
+</div>
 
     <header class="hero">
       <div class="logo-container">🔱</div>
@@ -640,7 +728,35 @@
     <div class="action-row">
       <button class="reset-action-btn" onclick="wipeCoreEngine()">Wipe Local Save Storage</button>
     </div>
+ <div class="rules-modal" id="rulesModal">
 
+  <div class="rules-content">
+
+    <button class="close-rules" id="closeRules">
+      ✕
+    </button>
+
+    <h2>📜 Game Rules</h2>
+
+    <div class="rule-line">
+      🔫 <strong>Gun</strong> defeats 🐍 Snake
+    </div>
+
+    <div class="rule-line">
+      🐍 <strong>Snake</strong> defeats 💧 Water
+    </div>
+
+    <div class="rule-line">
+      💧 <strong>Water</strong> defeats 🔫 Gun
+    </div>
+
+    <div class="rule-line">
+      🤝 Same choice = Draw
+    </div>
+
+  </div>
+
+</div>
   </main>
 
   <script>
@@ -939,6 +1055,26 @@
       requestAnimationFrame(loopConfetti);
     }
     loopConfetti();
+    const rulesBtn = document.getElementById("rules-btn");
+const rulesModal = document.getElementById("rulesModal");
+const closeRules = document.getElementById("closeRules");
+
+rulesBtn.addEventListener("click", () => {
+    rulesModal.classList.add("active");
+});
+
+closeRules.addEventListener("click", () => {
+    rulesModal.classList.remove("active");
+});
+
+rulesModal.addEventListener("click", (e) => {
+
+    if(e.target === rulesModal){
+        rulesModal.classList.remove("active");
+    }
+
+});
   </script>
+ 
 </body>
-</html>
+</html> 
